@@ -13,10 +13,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import se.kawi.taskmanagerservicelib.model.AbstractEntity;
+import se.kawi.taskmanagerservicelib.repository.AbstractRepository;
 import se.kawi.taskmanagerservicelib.service.ServiceException;
 import se.kawi.taskmanagerservicelib.service.ServiceTransaction.Action;
 
-public abstract class BaseService<E extends AbstractEntity, R extends PagingAndSortingRepository<E, Long> & JpaSpecificationExecutor<E>> {
+public abstract class BaseService<E extends AbstractEntity, R extends PagingAndSortingRepository<E, Long> & JpaSpecificationExecutor<E> & AbstractRepository<E>> {
 
 	protected R repository;
 	@Autowired
@@ -60,6 +61,10 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 	
 	public E getById(Long id) throws ServiceException {
 		return execute(() -> repository.findOne(id));
+	}
+
+	public E getByItemKey(String itemKey) throws ServiceException {
+		return execute(() -> repository.findByItemKey(itemKey));
 	}
 	
 	public List<E> query(Specification<E> spec, Pageable pageable) throws ServiceException {

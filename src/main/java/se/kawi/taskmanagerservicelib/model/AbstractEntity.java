@@ -26,7 +26,7 @@ public abstract class AbstractEntity {
 	}
 	
 	@PrePersist
-	public void createKey() {
+	private void createKey() {
 		if (itemKey == null) {
 			itemKey = UUID.randomUUID().toString();
 		} 

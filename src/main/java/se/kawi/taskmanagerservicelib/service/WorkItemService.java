@@ -26,24 +26,23 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 		return issueService.query(spec, pageable);
 	}
 
-	public WorkItem addIssueToWorkItem(Issue issueInput, WorkItem workItem) throws ServiceException {
+	public WorkItem addIssueToWorkItem(String issueItemKey, WorkItem workItem) throws ServiceException {
 		if (!workItem.getStatus().equals(Status.DONE)) {
 			throw new ServiceException("Work item needs to be done", new WebApplicationException("Work item needs to be done", 400));
 		}
 		else {
 			return transaction(() -> {
-				Issue issue = issueService.getById(issueInput.getId());
+				Issue issue = issueService.getByItemKey(issueItemKey);
 				issue.setWorkItem(workItem);
 				workItem.setStatus(Status.UNSTARTED);
 				issueService.save(issue);
-				save(workItem);
-				return workItem;
+				return save(workItem);
 			});
 		}		
 	}
 	
-	public WorkItem removeIssueFromWorkItem(Issue issueInput, WorkItem workItem) throws ServiceException {
-		Issue issue = issueService.getById(issueInput.getId());
+	public WorkItem removeIssueFromWorkItem(String issueItemKey, WorkItem workItem) throws ServiceException {
+		Issue issue = issueService.getByItemKey(issueItemKey);
 		issue.setWorkItem(null);
 		issueService.save(issue);
 		return workItem;

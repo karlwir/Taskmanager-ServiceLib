@@ -31,20 +31,20 @@ public class UserService extends BaseService<User, UserRepository> {
 		return workItemService.query(spec, pageable);
 	}
 	
-	public User assignWorkItem(WorkItem workItemInput, User user) throws ServiceException {
+	public User assignWorkItem(String workItemItemKey, User user) throws ServiceException {
 		if(!user.isActiveUser()) {			
 			throw new ServiceException("Cant assign to inactive user", new WebApplicationException("Cant assign to inactive user", 400));
 		} else if(user.getWorkItems().size() >= USER_MAX_WORKITEMS) {
 			throw new ServiceException("User cant be assigned to more items", new WebApplicationException("User cant be assigned to more items", 400));
 		} else {
-			WorkItem workItem = workItemService.getById(workItemInput.getId());
+			WorkItem workItem = workItemService.getByItemKey(workItemItemKey);
 			user.addWorkItem(workItem);
 			return save(user);
 		}
 	}
 	
-	public User withdrawWorkItem(WorkItem workItemInput, User user) throws ServiceException {
-		WorkItem workItem = workItemService.getById(workItemInput.getId());
+	public User withdrawWorkItem(String workItemItemKey, User user) throws ServiceException {
+		WorkItem workItem = workItemService.getByItemKey(workItemItemKey);
 		user.removeWorkItem(workItem);
 		return save(user);
 	}

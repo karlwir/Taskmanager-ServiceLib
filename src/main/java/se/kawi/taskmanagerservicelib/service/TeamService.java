@@ -29,22 +29,21 @@ public class TeamService extends BaseService<Team, TeamRepository> {
 		return userService.query(spec, pageable);
 	}
 	
-	public Team addTeamMember(User userInput, Team team) throws ServiceException {
+	public Team addTeamMember(String userItemKey, Team team) throws ServiceException {
 		if (team.getUsers().size() >= TEAM_MAX_SIZE) {
 			throw new ServiceException("Team is full");
 		}
 		
-		User user = userService.getById(userInput.getId());
+		User user = userService.getByItemKey(userItemKey);
 		if (user.getTeams().size() >= USER_MAX_TEAMS) {
 			throw new ServiceException("User has to many teams: ");
 		}
-		
 		team.addUser(user);
 		return super.save(team);
 	}
 
-	public Team removeTeamMember(User userInput, Team team) throws ServiceException {
-		User user = userService.getById(userInput.getId());
+	public Team removeTeamMember(String userItemKey, Team team) throws ServiceException {
+		User user = userService.getByItemKey(userItemKey);
 		team.removeUser(user);
 		return super.save(team);
 	}
