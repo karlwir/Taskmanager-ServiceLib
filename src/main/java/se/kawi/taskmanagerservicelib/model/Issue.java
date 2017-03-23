@@ -2,9 +2,12 @@ package se.kawi.taskmanagerservicelib.model;
 
 import javax.persistence.Table;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 
 @Entity
 @Table(name = "issues")
@@ -29,6 +32,14 @@ public class Issue extends AbstractEntity {
 		this.description = description;
 		this.workItem = workitem;
 		this.openIssue = true;
+	}
+	
+	@PrePersist
+	void createKey() {
+		if (itemKey == null) {
+			String uuid = UUID.randomUUID().toString();
+			itemKey = "b2da" + uuid.substring(4);
+		} 
 	}
 	
 	public String getTitle() {

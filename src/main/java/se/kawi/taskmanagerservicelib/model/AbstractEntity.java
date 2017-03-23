@@ -2,11 +2,8 @@ package se.kawi.taskmanagerservicelib.model;
 
 import javax.persistence.Id;
 
-import java.util.UUID;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
@@ -15,7 +12,7 @@ public abstract class AbstractEntity {
 	@GeneratedValue
 	private Long id;
 	
-	private String itemKey;
+	protected String itemKey;
 
 	public Long getId() {
 		return id;
@@ -25,10 +22,5 @@ public abstract class AbstractEntity {
 		return itemKey;
 	}
 	
-	@PrePersist
-	private void createKey() {
-		if (itemKey == null) {
-			itemKey = UUID.randomUUID().toString();
-		} 
-	}
+	abstract void createKey();
 }

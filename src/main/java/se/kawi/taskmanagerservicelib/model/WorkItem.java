@@ -1,6 +1,7 @@
 package se.kawi.taskmanagerservicelib.model;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.persistence.Table;
@@ -9,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -39,7 +41,15 @@ public class WorkItem extends AbstractEntity {
 		this.description = description;
 		this.status = Status.UNSTARTED;
 	}
-
+	
+	@PrePersist
+	void createKey() {
+		if (itemKey == null) {
+			String uuid = UUID.randomUUID().toString();
+			itemKey = "b2dd" + uuid.substring(4);
+		} 
+	}
+	
 	public String getTitle() {
 		return title;
 	}

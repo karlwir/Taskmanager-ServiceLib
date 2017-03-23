@@ -1,6 +1,7 @@
 package se.kawi.taskmanagerservicelib.model;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.persistence.Table;
@@ -9,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 
 @Entity
 @Table(name = "teams")
@@ -28,6 +30,14 @@ public class Team extends AbstractEntity {
 	public Team(String teamName) {
 		this.teamName = teamName;
 		this.activeTeam = true;
+	}
+	
+	@PrePersist
+	void createKey() {
+		if (itemKey == null) {
+			String uuid = UUID.randomUUID().toString();
+			itemKey = "b2db" + uuid.substring(4);
+		} 
 	}
 
 	public String getTeamName() {
