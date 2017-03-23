@@ -5,8 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +12,6 @@ import javax.persistence.ManyToMany;
 
 @Entity
 @Table(name = "teams")
-@JsonIgnoreProperties(value = {"users"}, allowGetters=true, allowSetters=false)
 public class Team extends AbstractEntity {
 
 	@Column(nullable = false, unique = true)
@@ -24,7 +21,6 @@ public class Team extends AbstractEntity {
 	private boolean activeTeam;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
-	@JsonIgnoreProperties(value = {"teams", "workItems"}, allowGetters=false, allowSetters=false)
 	private Set<User> users;
 
 	protected Team() {}

@@ -2,15 +2,12 @@ package se.kawi.taskmanagerservicelib.model;
 
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
 @Table(name = "issues")
-@JsonIgnoreProperties(value = {"workItem"}, allowGetters=true, allowSetters=false)
 public class Issue extends AbstractEntity {
 	
 	@Column(nullable = false)
@@ -23,7 +20,6 @@ public class Issue extends AbstractEntity {
 	private boolean openIssue;
 	
 	@ManyToOne
-	@JsonIgnoreProperties(value={"issues"}, allowGetters=false, allowSetters=false)
 	private WorkItem workItem;
 
 	protected Issue() {}
