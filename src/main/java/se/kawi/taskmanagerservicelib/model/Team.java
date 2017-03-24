@@ -17,19 +17,19 @@ import javax.persistence.PrePersist;
 public class Team extends AbstractEntity {
 
 	@Column(nullable = false, unique = true)
-	private String teamName;
+	private String name;
 	
 	@Column(nullable = false)
-	private boolean activeTeam;
+	private boolean active;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	private Set<User> users;
 
 	protected Team() {}
 
-	public Team(String teamName) {
-		this.teamName = teamName;
-		this.activeTeam = true;
+	public Team(String name) {
+		this.name = name;
+		this.active = true;
 	}
 	
 	@PrePersist
@@ -40,12 +40,12 @@ public class Team extends AbstractEntity {
 		} 
 	}
 
-	public String getTeamName() {
-		return teamName;
+	public String getName() {
+		return name;
 	}
 	
-	public Team setTeamName(String teamName) {
-		this.teamName = teamName;
+	public Team setName(String name) {
+		this.name = name;
 		return this;
 	}
 	
@@ -70,18 +70,18 @@ public class Team extends AbstractEntity {
 		return this;
 	}
 	
-	public boolean isActiveTeam() {
-		return activeTeam;
+	public boolean isActive() {
+		return active;
 	}
 
-	public Team setActiveTeam(boolean activeTeam) {
-		this.activeTeam = activeTeam;
+	public Team setActive(boolean active) {
+		this.active = active;
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Team: %s, %s, active:%s", getId(), teamName, activeTeam);
+		return String.format("Team: %s, %s, active:%s", getId(), name, active);
 	}
 
 }

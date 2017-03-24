@@ -25,7 +25,7 @@ public class User extends AbstractEntity {
 	private String lastname;
 
 	@Column(nullable = false)
-	private boolean activeUser;
+	private boolean active;
 	
 	@ManyToMany(mappedBy = "users", fetch=FetchType.EAGER)
 	private Set<Team> teams;
@@ -39,7 +39,7 @@ public class User extends AbstractEntity {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.activeUser = true;
+		this.active = true;
 	}
 	
 	@PrePersist
@@ -63,7 +63,7 @@ public class User extends AbstractEntity {
 	}
 
 	public boolean isActiveUser() {
-		return activeUser;
+		return active;
 	}
 
 	public Set<Team> getTeams() {
@@ -90,8 +90,8 @@ public class User extends AbstractEntity {
 		return this;
 	}
 
-	public User setActiveUser(boolean activeUser) {
-		this.activeUser = activeUser;
+	public User setActiveUser(boolean active) {
+		this.active = active;
 		return this;
 	}
 	
@@ -119,7 +119,7 @@ public class User extends AbstractEntity {
 	
 	@Override
 	public String toString() {
-		return String.format("User: %s, %s, %s, %s, active:%s", getId(), username, firstname, lastname, activeUser);
+		return String.format("User: %s, %s, %s, %s, active:%s", getId(), username, firstname, lastname, active);
 	}
 	
 	@Override
