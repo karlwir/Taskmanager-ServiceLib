@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 class ServiceTransaction {
 
 	@Transactional
-	public <T> T execute(Action<T> action) throws ServiceException {
+	public <T> T executeInTransaction(Action<T> action) throws ServiceException {
 		return action.execute();
 	}
 
 	public static interface Action<T> {
 		T execute() throws ServiceException;
-
 	}
 }

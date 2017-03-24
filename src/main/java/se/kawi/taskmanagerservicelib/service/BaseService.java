@@ -1,7 +1,6 @@
 package se.kawi.taskmanagerservicelib.service;
 
 import java.util.List;
-
 import javax.ws.rs.WebApplicationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,10 @@ import se.kawi.taskmanagerservicelib.service.ServiceTransaction.Action;
 public abstract class BaseService<E extends AbstractEntity, R extends PagingAndSortingRepository<E, Long> & JpaSpecificationExecutor<E> & AbstractRepository<E>> {
 
 	protected R repository;
+	
 	@Autowired
 	protected ServiceTransaction serviceTransaction;
+	
 	@Autowired
 	protected UserService userService;
 	@Autowired
@@ -41,18 +42,14 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 		} catch (DataIntegrityViolationException e) {
 			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(400));
 		} catch (DataAccessException e) {
-			throw new ServiceException("Execute failed: " + e.getMessage(), e);
+			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(400));
+		} catch (ServiceDataException e) {
+			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(400));
 		}
 	}
 	
 	protected <T> T transaction(Action<T> action) throws ServiceException {
-		try {
-			return serviceTransaction.execute(() -> action.execute());			
-		} catch (DataIntegrityViolationException e) {
-			throw new ServiceException("Transaction failed: " + e.getMessage(), e, new WebApplicationException(400));
-		} catch (DataAccessException e) {
-			throw new ServiceException("Transaction failed: " + e.getMessage(), e);
-		}
+		return serviceTransaction.executeInTransaction(() -> execute(action));
 	}
 	
 	public E save(E entity) throws ServiceException {
@@ -76,7 +73,7 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 	}
 
 	public void delete(E entity) throws ServiceException {
-		transaction(() -> {
+		execute(() -> {
 			repository.delete(entity);
 			return null;
 		});
