@@ -20,7 +20,7 @@ public class Issue extends AbstractEntity {
 	private String description;
 	
 	@Column(nullable = false)
-	private boolean openIssue;
+	private boolean open;
 	
 	@ManyToOne
 	private WorkItem workItem;
@@ -31,7 +31,7 @@ public class Issue extends AbstractEntity {
 		this.title = title;
 		this.description = description;
 		this.workItem = workitem;
-		this.openIssue = true;
+		this.open = true;
 	}
 	
 	@PrePersist
@@ -50,8 +50,8 @@ public class Issue extends AbstractEntity {
 		return description;
 	}
 
-	public boolean isOpenIssue() {
-		return openIssue;
+	public boolean isOpen() {
+		return open;
 	}
 
 	public WorkItem getWorkItem() {
@@ -71,14 +71,14 @@ public class Issue extends AbstractEntity {
 		return this;
 	}
 
-	public Issue setOpenIssue(boolean openIssue) {
-		this.openIssue = openIssue;
+	public Issue setOpen(boolean open) {
+		this.open = open;
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Issue: %s, %s, %s, open:%s, workitem:%s", getId(), title, description, openIssue, workItem.getId());
+		return String.format("Issue: %s, %s, %s, open:%s, workitem:%s", getId(), title, description, open, workItem.getId());
 	}
 
 }
