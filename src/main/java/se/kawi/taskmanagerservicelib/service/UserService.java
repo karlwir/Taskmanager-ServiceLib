@@ -33,24 +33,20 @@ public class UserService extends BaseService<User, UserRepository> {
 
 	public WorkItem assignNewWorkItem(WorkItem newWorkItem, User user) throws ServiceException {
 		return transaction(() -> {
-			if (canBeAssignedWorkItems(user)) {
-				WorkItem savedWorkItem = workItemService.save(newWorkItem);
-				user.addWorkItem(savedWorkItem);
-				save(user);
-				return savedWorkItem;
-			}
-			return null;
+			canBeAssignedWorkItems(user);
+			WorkItem savedWorkItem = workItemService.save(newWorkItem);
+			user.addWorkItem(savedWorkItem);
+			save(user);
+			return savedWorkItem;
 		});
 	}
 
 	public User assignWorkItem(String workItemItemKey, User user) throws ServiceException {
 		return execute(() -> {
-			if (canBeAssignedWorkItems(user)) {
-				WorkItem workItem = workItemService.getByItemKey(workItemItemKey);
-				user.addWorkItem(workItem);
-				return save(user);
-			}
-			return null;
+			canBeAssignedWorkItems(user);
+			WorkItem workItem = workItemService.getByItemKey(workItemItemKey);
+			user.addWorkItem(workItem);
+			return save(user);
 		});
 	}
 
@@ -65,21 +61,18 @@ public class UserService extends BaseService<User, UserRepository> {
 	@Override
 	public User save(User user) throws ServiceException {
 		return transaction(() -> {
-			if (isValidUsername(user.getUsername())) {
-				if (!user.isActiveUser() && user.getId() != null) {
-					// Handle users work items before making user inactive
-					Set<WorkItem> workItems = getById(user.getId()).getWorkItems();
-					for(WorkItem w : workItems) {
-						user.removeWorkItem(w);
-						if (!w.getStatus().equals(Status.ARCHIVED)) {
-							w.setStatus(Status.UNSTARTED);
-							workItemService.save(w);
-						}
+			isValidUsername(user.getUsername());
+			if (!user.isActiveUser() && user.getId() != null) {
+				Set<WorkItem> workItems = getById(user.getId()).getWorkItems();
+				for(WorkItem w : workItems) {
+					user.removeWorkItem(w);
+					if (!w.getStatus().equals(Status.ARCHIVED)) {
+						w.setStatus(Status.UNSTARTED);
+						workItemService.save(w);
 					}
 				}
-				return super.save(user);
 			}
-			return null;
+			return super.save(user);
 		});
 	}
 
