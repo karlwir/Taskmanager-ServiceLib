@@ -31,11 +31,11 @@ public class TeamService extends BaseService<Team, TeamRepository> {
 	public Team addTeamMember(String userItemKey, Team team) throws ServiceException {
 		return execute(() -> {
 			if (team.getUsers().size() >= TEAM_MAX_SIZE) {
-				throw new ServiceDataException("Team is full. Max number of members in each team is: " + TEAM_MAX_SIZE);
+				throw new ServiceDataFormatException("Team is full. Max number of members in each team is: " + TEAM_MAX_SIZE);
 			}
 			User user = userService.getByItemKey(userItemKey);
 			if (user.getTeams().size() >= USER_MAX_TEAMS) {
-				throw new ServiceDataException(
+				throw new ServiceDataFormatException(
 						"User has to many teams. Max number of teams per user is: " + USER_MAX_TEAMS);
 			}
 			team.addUser(user);

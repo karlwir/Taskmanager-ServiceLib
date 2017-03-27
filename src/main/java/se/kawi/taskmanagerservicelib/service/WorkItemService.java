@@ -28,7 +28,7 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 	public WorkItem addIssueToWorkItem(String issueItemKey, WorkItem workItem) throws ServiceException {
 		return transaction(() -> {
 			if (!workItem.getStatus().equals(Status.DONE)) {
-				throw new ServiceDataException("Issues can only be added to work items with status DONE.");
+				throw new ServiceDataFormatException("Issues can only be added to work items with status DONE.");
 			} else {
 				Issue issue = issueService.getByItemKey(issueItemKey);
 				issue.setWorkItem(workItem);

@@ -10,8 +10,6 @@ import se.kawi.taskmanagerservicelib.repository.UserRepository;
 import java.util.Set;
 import java.util.List;
 
-import javax.ws.rs.WebApplicationException;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +61,7 @@ public class UserService extends BaseService<User, UserRepository> {
 		return transaction(() -> {
 			isValidUsername(user.getUsername());
 			if (!user.isActiveUser() && user.getId() != null) {
-				Set<WorkItem> workItems = getById(user.getId()).getWorkItems();
+				Set<WorkItem> workItems = getByItemKey(user.getItemKey()).getWorkItems();
 				for(WorkItem w : workItems) {
 					user.removeWorkItem(w);
 					if (!w.getStatus().equals(Status.ARCHIVED)) {
@@ -78,7 +76,7 @@ public class UserService extends BaseService<User, UserRepository> {
 
 	private boolean isValidUsername(String username) {
 		if (username.length() < USERNAME_MIN_LENGTH) {
-			throw new ServiceDataException("Invalid username", new WebApplicationException("Invalid username", 400));
+			throw new ServiceDataFormatException("Invalid username");
 		} else {
 			return true;
 		}
@@ -86,9 +84,9 @@ public class UserService extends BaseService<User, UserRepository> {
 
 	private boolean canBeAssignedWorkItems(User user) {
 		if (!user.isActiveUser()) {
-			throw new ServiceDataException("Cant assign to inactive user");
+			throw new ServiceDataFormatException("Cant assign to inactive user");
 		} else if (user.getWorkItems().size() >= USER_MAX_WORKITEMS) {
-			throw new ServiceDataException("User cant be assigned to more items");
+			throw new ServiceDataFormatException("User cant be assigned to more items");
 		} else {
 			return true;
 		}

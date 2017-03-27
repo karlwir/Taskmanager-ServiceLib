@@ -1,7 +1,6 @@
 package se.kawi.taskmanagerservicelib.service;
 
 import java.util.List;
-import javax.ws.rs.WebApplicationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -40,11 +39,11 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 		try {
 			return action.execute();			
 		} catch (DataIntegrityViolationException e) {
-			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(400));
+			throw new ServiceException("Execute failed: " + e.getMessage(), e);
 		} catch (DataAccessException e) {
-			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(400));
-		} catch (ServiceDataException e) {
-			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(400));
+			throw new ServiceDataSourceException("Execute failed: " + e.getMessage(), e);
+		} catch (ServiceDataFormatException e) {
+			throw new ServiceDataFormatException("Execute failed: " + e.getMessage(), e);
 		}
 	}
 	
@@ -55,13 +54,15 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 	public E save(E entity) throws ServiceException {
 		return execute(() -> repository.save(entity));
 	}
-	
-	public E getById(Long id) throws ServiceException {
-		return execute(() -> repository.findOne(id));
-	}
 
 	public E getByItemKey(String itemKey) throws ServiceException {
-		return execute(() -> repository.findByItemKey(itemKey));
+		return execute(() -> {
+				E entity = repository.findByItemKey(itemKey);
+				if (entity == null) {
+					throw new ServiceEntityNotFoundException("No entity found for item key: " + itemKey);
+				}
+				return entity;
+			});
 	}
 	
 	public List<E> query(Specification<E> spec, Pageable pageable) throws ServiceException {
