@@ -1,13 +1,11 @@
 package se.kawi.taskmanagerservicelib.model;
 
-import javax.annotation.Generated;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
 import se.kawi.taskmanagerservicelib.model.WorkItem.Status;
 
-@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(WorkItem.class)
 public abstract class WorkItem_ extends se.kawi.taskmanagerservicelib.model.AbstractEntity_ {
 
