@@ -47,4 +47,13 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 			return workItem;
 		});
 	}
+	
+	@Override
+	public void delete(WorkItem workItem) throws ServiceException {
+		transaction(() -> {
+			userService.unAssignWorkitem(workItem);
+			repository.delete(workItem);
+			return null;
+		});
+	}
 }

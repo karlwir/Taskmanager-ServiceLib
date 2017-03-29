@@ -73,6 +73,17 @@ public class UserService extends BaseService<User, UserRepository> {
 			return super.save(user);
 		});
 	}
+	
+	public WorkItem unAssignWorkitem(WorkItem workItem) throws ServiceException {
+		return transaction(() -> {
+			Set<User> users = workItem.getUsers();
+			for(User user : users) {
+				user.removeWorkItem(workItem);
+			}
+			repository.save(users);
+			return workItem;
+		});
+	}
 
 	private boolean isValidUsername(String username) {
 		if (username.length() < USERNAME_MIN_LENGTH) {

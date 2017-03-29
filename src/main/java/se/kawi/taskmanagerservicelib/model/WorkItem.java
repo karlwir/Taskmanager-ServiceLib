@@ -102,7 +102,7 @@ public class WorkItem extends AbstractEntity {
 	public Set<User> getUsers() {
 		return users;
 	}
-
+	
 	public enum Status {
 		 UNSTARTED, STARTED, DONE, ARCHIVED
 	}
@@ -111,5 +111,6 @@ public class WorkItem extends AbstractEntity {
 	public String toString() {
 		return String.format("Workitem: %s, %s, %s, %s", getId(), title, description, status);
 	}
+
 		
 }
