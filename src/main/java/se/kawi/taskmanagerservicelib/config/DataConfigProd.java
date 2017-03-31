@@ -65,7 +65,7 @@ public class DataConfigProd {
 			e.printStackTrace();
 		}
 		factory.setJpaVendorAdapter(jpaVendorAdapter());
-		factory.setPackagesToScan("se.kawi.taskmanagerservicelib.model");
+		factory.setPackagesToScan("se.kawi.taskmanagerservicelib.model", "org.springframework.data.jpa.convert.threeten");
 
 		return factory;
 	}
