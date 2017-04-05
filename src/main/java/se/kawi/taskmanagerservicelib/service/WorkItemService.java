@@ -25,17 +25,25 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 		return issueService.query(spec, pageable);
 	}
 
-	public WorkItem addIssueToWorkItem(String issueItemKey, WorkItem workItem) throws ServiceException {
+	public WorkItem addIssue(String issueItemKey, WorkItem workItem) throws ServiceException {
 		return transaction(() -> {
-			if (!workItem.getStatus().equals(Status.DONE)) {
-				throw new ServiceDataFormatException("Issues can only be added to work items with status DONE.");
-			} else {
+				canAddIssue(workItem);
 				Issue issue = issueService.getByItemKey(issueItemKey);
 				issue.setWorkItem(workItem);
 				workItem.setStatus(Status.UNSTARTED);
 				issueService.save(issue);
 				return save(workItem);
-			}
+		});
+	}
+
+	public Issue addNewIssue(Issue issue, WorkItem workItem) throws ServiceException {
+		return transaction(() -> {
+				canAddIssue(workItem);
+				issue.setWorkItem(workItem);
+//				workItem.setStatus(Status.UNSTARTED);
+				save(workItem);
+				Issue savedIssue = issueService.save(issue);
+				return savedIssue;
 		});
 	}
 
@@ -55,5 +63,13 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 			repository.delete(workItem);
 			return null;
 		});
+	}
+	
+	private boolean canAddIssue(WorkItem workItem) {
+		if (!workItem.getStatus().equals(Status.DONE)) {
+			throw new ServiceDataFormatException("Issues can only be added to work items with status DONE.");
+		} else {
+			return true;
+		}
 	}
 }
