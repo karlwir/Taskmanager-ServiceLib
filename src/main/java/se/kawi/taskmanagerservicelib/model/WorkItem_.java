@@ -14,6 +14,7 @@ public abstract class WorkItem_ extends se.kawi.taskmanagerservicelib.model.Abst
 	public static volatile SetAttribute<WorkItem, User> users;
 	public static volatile SetAttribute<WorkItem, Issue> issues;
 	public static volatile SingularAttribute<WorkItem, Status> status;
+	public static volatile SingularAttribute<WorkItem, Long> priority;
 
 }
 
