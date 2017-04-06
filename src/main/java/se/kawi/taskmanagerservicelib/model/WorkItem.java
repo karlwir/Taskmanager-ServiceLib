@@ -28,7 +28,7 @@ public class WorkItem extends AbstractEntity {
 	private Status status;
 	
 	@Column(nullable = false)
-	private Long priority;
+	private Float priority;
 	
 	@ManyToMany(mappedBy = "workItems", fetch=FetchType.EAGER)
 	private Set<User> users;
@@ -38,11 +38,11 @@ public class WorkItem extends AbstractEntity {
 
 	protected WorkItem() {}
 
-	public WorkItem(String title, String description) {
+	public WorkItem(String title, String description, Float priority) {
 		this.title = title;
 		this.description = description;
 		this.status = Status.UNSTARTED;
-		this.priority = 1L;
+		this.priority = priority;
 	}
 	
 	@PrePersist
@@ -80,11 +80,11 @@ public class WorkItem extends AbstractEntity {
 		return this;
 	}
 	
-	public Long getPriority() {
+	public Float getPriority() {
 		return priority;
 	}
 	
-	public void setPriority(Long priority) {
+	public void setPriority(Float priority) {
 		this.priority = priority;
 	}
 	
