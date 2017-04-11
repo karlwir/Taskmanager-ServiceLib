@@ -1,8 +1,5 @@
 package se.kawi.taskmanagerservicelib.config;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
