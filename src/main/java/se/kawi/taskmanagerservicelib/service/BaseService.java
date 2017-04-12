@@ -57,12 +57,12 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 
 	public E getByItemKey(String itemKey) throws ServiceException {
 		return execute(() -> {
-				E entity = repository.findByItemKey(itemKey);
-				if (entity == null) {
-					throw new ServiceEntityNotFoundException("No entity found for item key: " + itemKey);
-				}
-				return entity;
-			});
+			E entity = repository.findByItemKey(itemKey);
+			if (entity == null) {
+				throw new ServiceEntityNotFoundException("No entity found for item key: " + itemKey);
+			}
+			return entity;
+		});
 	}
 	
 	public List<E> query(Specification<E> spec, Pageable pageable) throws ServiceException {
