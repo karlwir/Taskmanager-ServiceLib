@@ -30,7 +30,7 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 				canAddIssue(workItem);
 				Issue issue = issueService.getByItemKey(issueItemKey);
 				issue.setWorkItem(workItem);
-				workItem.setStatus(Status.UNSTARTED);
+//				workItem.setStatus(Status.UNSTARTED);
 				issueService.save(issue);
 				return save(workItem);
 		});

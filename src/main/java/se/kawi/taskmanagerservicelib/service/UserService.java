@@ -19,6 +19,7 @@ public class UserService extends BaseService<User, UserRepository> {
 
 	private static final int USERNAME_MIN_LENGTH = 6;
 	private static final int USER_MAX_WORKITEMS = 5;
+	private static final int WORKITEM_MAX_USERS = 1;
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -43,6 +44,7 @@ public class UserService extends BaseService<User, UserRepository> {
 		return execute(() -> {
 			canBeAssignedWorkItems(user);
 			WorkItem workItem = workItemService.getByItemKey(workItemItemKey);
+			canBeAssignedUsers(workItem);
 			user.addWorkItem(workItem);
 			return save(user);
 		});
@@ -93,6 +95,15 @@ public class UserService extends BaseService<User, UserRepository> {
 		}
 	}
 
+
+	private boolean canBeAssignedUsers(WorkItem workItem) {
+		if (workItem.getUsers().size() >= WORKITEM_MAX_USERS) {
+			throw new ServiceDataFormatException("WorkItem has max number of users assigned");
+		} else {
+			return true;
+		}
+	}
+	
 	private boolean canBeAssignedWorkItems(User user) {
 		if (!user.isActiveUser()) {
 			throw new ServiceDataFormatException("Cant assign to inactive user");
