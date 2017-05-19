@@ -5,7 +5,7 @@
 
 	<groupId>se.kawi</groupId>
 	<artifactId>Taskmanager-servicelib</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<packaging>jar</packaging>
 
 	<name>Taskmanager</name>
