@@ -19,6 +19,9 @@ public class Team extends AbstractEntity {
 	@Column(nullable = false, unique = true)
 	private String name;
 	
+	@Column(nullable = false, unique = true)
+	private String description;
+	
 	@Column(nullable = false)
 	private boolean active;
 	
@@ -27,8 +30,9 @@ public class Team extends AbstractEntity {
 
 	protected Team() {}
 
-	public Team(String name) {
+	public Team(String name, String description) {
 		this.name = name;
+		this.description = description;
 		this.active = true;
 	}
 	
@@ -47,6 +51,14 @@ public class Team extends AbstractEntity {
 	public Team setName(String name) {
 		this.name = name;
 		return this;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public Set<User> getUsers() {
@@ -81,7 +93,7 @@ public class Team extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return String.format("Team: %s, %s, active:%s", getId(), name, active);
+		return String.format("Team: %s, %s, %s, active:%s", getId(), name, description, active);
 	}
 
 }
