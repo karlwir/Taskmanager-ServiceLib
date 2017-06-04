@@ -19,7 +19,7 @@ public class UserService extends BaseService<User, UserRepository> {
 
 	private static final int USERNAME_MIN_LENGTH = 6;
 	private static final int USER_MAX_WORKITEMS = 5;
-	private static final int WORKITEM_MAX_USERS = 1;
+	private static final int WORKITEM_MAX_USERS = 5;
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
