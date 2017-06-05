@@ -23,6 +23,9 @@ public class User extends AbstractEntity {
 	
 	@Column(nullable = false)
 	private String lastname;
+	
+	@Column
+	private String email;
 
 	@Column(nullable = false)
 	private boolean active;
@@ -35,10 +38,11 @@ public class User extends AbstractEntity {
 	
 	protected User() {}
 
-	public User(String username, String firstname, String lastname) {
+	public User(String username, String firstname, String lastname, String email) {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.email = email;
 		this.active = true;
 	}
 	
@@ -60,6 +64,10 @@ public class User extends AbstractEntity {
 
 	public String getLastname() {
 		return lastname;
+	}
+	
+	public String getEmail() {
+		return email;
 	}
 
 	public boolean isActiveUser() {
@@ -88,6 +96,10 @@ public class User extends AbstractEntity {
 	public User setUsername(String username) {
 		this.username = username;
 		return this;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public User setActiveUser(boolean active) {
@@ -119,7 +131,7 @@ public class User extends AbstractEntity {
 	
 	@Override
 	public String toString() {
-		return String.format("User: %s, %s, %s, %s, active:%s", getId(), username, firstname, lastname, active);
+		return String.format("User: %s, %s, %s, %s, %s, active:%s", getId(), username, firstname, lastname, email, active);
 	}
 	
 	@Override

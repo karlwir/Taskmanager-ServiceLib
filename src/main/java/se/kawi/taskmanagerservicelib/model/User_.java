@@ -10,6 +10,7 @@ public abstract class User_ extends se.kawi.taskmanagerservicelib.model.Abstract
 	public static volatile SingularAttribute<User, String> firstname;
 	public static volatile SingularAttribute<User, String> lastname;
 	public static volatile SingularAttribute<User, String> username;
+	public static volatile SingularAttribute<User, String> email;
 	public static volatile SetAttribute<User, WorkItem> workItems;
 	public static volatile SetAttribute<User, Team> teams;
 	public static volatile SingularAttribute<User, Boolean> active;

@@ -65,6 +65,14 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 		});
 	}
 	
+	public E queryOne(Specification<E> spec, Pageable pageable) throws ServiceException {
+		List<E> result =  execute(() -> repository.findAll(spec, pageable)).getContent();
+		if (result.size() > 0) {
+			return result.get(0);
+		}
+		return null;
+	}
+	
 	public List<E> query(Specification<E> spec, Pageable pageable) throws ServiceException {
 		return execute(() -> repository.findAll(spec, pageable)).getContent();
 	}
