@@ -65,12 +65,12 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 		});
 	}
 	
-	public E queryOne(Specification<E> spec, Pageable pageable) throws ServiceException {
-		List<E> result =  execute(() -> repository.findAll(spec, pageable)).getContent();
-		if (result.size() > 0) {
-			return result.get(0);
+	public E queryOne(Specification<E> spec) throws ServiceException {
+		E entity =  execute(() -> repository.findOne(spec));
+		if (entity == null) {
+			throw new ServiceEntityNotFoundException("No entity found");
 		}
-		return null;
+		return entity;
 	}
 	
 	public List<E> query(Specification<E> spec, Pageable pageable) throws ServiceException {
